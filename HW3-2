@@ -1,0 +1,32 @@
+def count_fib_calls(n, target):
+    """ Count how many times fibonacci(target) is called when calculating fibonacci(n) """
+    # Memoization for count of calls
+    count_memo = {}
+
+    def fib_count(x):
+        if x < target:
+            return 0
+        if x == target:
+            return 1
+        if x not in count_memo:
+            count_memo[x] = fib_count(x - 1) + fib_count(x - 2)
+        return count_memo[x]
+
+    return fib_count(n)
+
+# Calculate F(4) count in the computations of F(5) to F(50)
+target_fib_number = 4
+start = 5
+end = 50
+counts = [count_fib_calls(i, target_fib_number) for i in range(start, end + 1)]
+
+# Plotting the results
+import matplotlib.pyplot as plt
+plt.figure(figsize=(10, 5))
+plt.plot(range(start, end + 1), counts, label='Count of F(4) calls')
+plt.xlabel('n (F(n))')
+plt.ylabel('Count of Calls to F(4)')
+plt.title('Count of Calls to F(4) in the Computation of F(5) to F(50)')
+plt.legend()
+plt.grid(True)
+plt.show()
