@@ -1,0 +1,46 @@
+import time
+import matplotlib.pyplot as plt
+
+# Top-down recursive approach with memoization
+def fibonacci_memoized(n, memo={}):
+    if n in memo:
+        return memo[n]
+    if n <= 1:
+        return n
+    memo[n] = fibonacci_memoized(n-1, memo) + fibonacci_memoized(n-2, memo)
+    return memo[n]
+
+# Bottom-up approach using dynamic programming
+def fibonacci_dynamic(n):
+    if n <= 1:
+        return n
+    dp = [0] * (n + 1)
+    dp[1] = 1
+    for i in range(2, n + 1):
+        dp[i] = dp[i - 1] + dp[i - 2]
+    return dp[n]
+
+# Function to measure execution time
+def measure_execution_time(func, n=100):
+    times = []
+    for i in range(1, n + 1):
+        start_time = time.time()
+        func(i)
+        end_time = time.time()
+        times.append(end_time - start_time)
+    return times
+
+# Measure execution times for both methods
+times_memoized = measure_execution_time(fibonacci_memoized)
+times_dynamic = measure_execution_time(fibonacci_dynamic)
+
+# Plotting the results
+plt.figure(figsize=(10, 5))
+plt.plot(range(1, 101), times_memoized, label='Top-Down Memoized Recursive')
+plt.plot(range(1, 101), times_dynamic, label='Bottom-Up Dynamic')
+plt.xlabel('Fibonacci Number Index (n)')
+plt.ylabel('Execution Time (seconds)')
+plt.title('Execution Time for Computing Fibonacci Numbers F(1) to F(100)')
+plt.legend()
+plt.grid(True)
+plt.show()
